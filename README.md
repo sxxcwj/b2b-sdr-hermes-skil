@@ -1,114 +1,29 @@
-# B2B SDR Agent Skill for Hermes
+# B2B SDR 智能销售代表 Agent Skill (面向 Hermes)
 
-<!-- bmc:front -->
-<p align="center"><a href="https://buymeacoffee.com/dayongfan"><img src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&amp;emoji=&amp;slug=dayongfan&amp;button_colour=FFDD00&amp;font_colour=000000&amp;font_family=Cookie&amp;outline_colour=000000&amp;coffee_colour=ffffff" alt="Buy me a coffee"></a></p>
-<!-- /bmc:front -->
+全天候自主运行的 AI B2B 销售开发代表（SDR）——支持通过 WhatsApp、邮件及 Telegram 自动化挖掘海外买家、资质审核（BANT）、发送个性化触达邮件，并全流程管理 B2B 外贸与出海商机漏斗。
 
-> Autonomous AI Sales Development Representative — finds buyers, qualifies leads, sends personalized outreach, and manages your entire B2B export pipeline 24/7 via WhatsApp, Email, and Telegram.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Hermes Agent](https://img.shields.io/badge/Hermes-Agent%20Skill-blue)](https://github.com/hermes-agent)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Hermes Agent](https://img.shields.io/badge/Hermes-Agent%20Skill-blue)](https://github.com/NousResearch/hermes-agent)
+---
 
-## What It Does
+## 核心功能
 
-| Stage | Action | Channel |
-|-------|--------|---------|
-| Lead Discovery | Web search for potential buyers in target markets | Automated |
-| Lead Capture | Auto-create CRM records from inbound messages | WhatsApp / Email / Telegram |
-| BANT Qualification | Score leads through natural conversation | WhatsApp / Telegram |
-| Research & Enrichment | Company background, decision-maker identification | Web search |
-| Quotation | Generate quotes with shipping + payment terms | Email / WhatsApp |
-| Outreach Sequences | 4-touch personalized cold email campaigns | Email |
-| Pipeline Management | Daily/weekly reports, stalled lead alerts | Cron |
-| Nurture | Automated re-engagement for cold/won/lost leads | Multi-channel |
+| 阶段 | 执行动作 | 触达渠道 |
+| :--- | :--- | :--- |
+| **潜客挖掘 (Lead Discovery)** | 在目标国家与市场全网检索潜在采购商 | 自动化后台 |
+| **客户建档 (Lead Capture)** | 收到入境消息后，自动在 CRM 中创建结构化客户档案 | WhatsApp / 邮件 / Telegram |
+| **BANT 资格审核** | 通过自然对话智能评估客户的预算、决策权、痛点及采购周期 | WhatsApp / Telegram |
+| **深度调研与信息补全** | 自动调研目标企业背景、主营产品及核心决策人联络方式 | 搜索引擎 |
+| **智能报价 (Quotation)** | 结合货运、结算与贸易条款自动生成规范化报价单草稿 | 邮件 / WhatsApp |
+| **阶梯式开发信触达** | 自动执行 4 轮个性化冷启动邮件（Cold Email）跟进序列 | 邮件 |
+| **商机漏斗巡检** | 自动输出日报与周报，对停滞未跟进的商机发出告警 | 定时任务 (Cron) |
+| **沉睡客户激活 (Nurture)** | 定期对未成交、已成交或停滞老客户进行自动化关怀与再触达 | 多渠道 |
 
-## Install
+---
 
+## 安装方法
+
+### 1. 推荐：通过 Hermes Agent 一键安装
 ```bash
-# One command — installs the skill into your Hermes agent
-hermes skills install github:iPythoning/b2b-sdr-hermes-skill
-```
-
-For **Claude Code / Codex / Cursor** users (via [skills.sh](https://skills.sh)):
-```bash
-npx skills add iPythoning/b2b-sdr-hermes-skill
-```
-
-Or manually:
-```bash
-cd ~/.hermes/skills
-git clone https://github.com/iPythoning/b2b-sdr-hermes-skill.git b2b-sdr-agent
-```
-
-## Setup
-
-After installation, start a new Hermes session and say:
-
-> "Set up the B2B SDR agent for my business"
-
-The skill will guide you through:
-1. Company name, industry, and target markets
-2. CRM setup (Google Sheets, Notion, JSON file, or HubSpot)
-3. Cron schedule activation for pipeline inspections
-4. WhatsApp pairing (if not already connected)
-
-<!-- bmc:middle -->
-<p align="center"><a href="https://buymeacoffee.com/dayongfan"><img src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&amp;emoji=&amp;slug=dayongfan&amp;button_colour=FFDD00&amp;font_colour=000000&amp;font_family=Cookie&amp;outline_colour=000000&amp;coffee_colour=ffffff" alt="Buy me a coffee"></a></p>
-<!-- /bmc:middle -->
-
-## Cron Schedules
-
-The skill includes 7 pre-configured inspection routines:
-
-| Schedule | Frequency | What It Does |
-|----------|-----------|-------------|
-| New leads | Every 4 hours | Check for unprocessed inbound leads |
-| Stalled leads | Weekdays 9:00 | Flag leads with no contact in 5+ days |
-| Quote follow-up | Weekdays 10:00 | Draft follow-ups for sent quotes |
-| Email sequences | Daily 11:00 | Execute Day 3/7/14 outreach follow-ups |
-| Lead discovery | Daily 10:00 | Search for new prospects in target markets |
-| Weekly report | Monday 9:00 | Full pipeline analytics |
-| Nurture check | Monday 9:00 | Re-engagement for cold/won/lost contacts |
-
-## Requirements
-
-- [Hermes Agent](https://github.com/NousResearch/hermes-agent) v0.7.0+
-- WhatsApp connected via `hermes whatsapp` (for WhatsApp channel)
-- Web search enabled (DuckDuckGo built-in, or Brave/Jina API key for better results)
-- Email: configure via `hermes agentmail` or SMTP settings for outreach sequences
-
-## CRM Options
-
-| Type | Best For | Setup |
-|------|----------|-------|
-| Google Sheets | Quick start, team visibility | Skill auto-creates the sheet |
-| JSON file | Self-hosted, no external deps | `~/sdr-crm.json` |
-| Notion | Rich formatting, databases | Provide Notion API key |
-| HubSpot | Enterprise, existing CRM | Provide HubSpot API key |
-
-## From OpenClaw?
-
-If you were using the [b2b-sdr-agent-template](https://github.com/iPythoning/b2b-sdr-agent-template) on OpenClaw, migrate with:
-
-```bash
-hermes claw migrate --preset full
-hermes skills install github:iPythoning/b2b-sdr-hermes-skill
-```
-
-Your SOUL.md, MEMORY.md, and CRM data carry over automatically.
-
-## Managed Version
-
-Want AI SDR as a managed service with built-in CRM, WhatsApp relay, and team dashboard? Try [PulseAgent](https://pulseagent.io) — 7-day free trial, no credit card required.
-
-## License
-
-MIT — use it however you want.
-
-## Contributing
-
-Issues and PRs welcome. The skill is designed to be forked and customized for your industry. See `examples/` for industry-specific configurations.
-
-<!-- bmc:end -->
-<p align="center"><a href="https://buymeacoffee.com/dayongfan"><img src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&amp;emoji=&amp;slug=dayongfan&amp;button_colour=FFDD00&amp;font_colour=000000&amp;font_family=Cookie&amp;outline_colour=000000&amp;coffee_colour=ffffff" alt="Buy me a coffee"></a></p>
-<!-- /bmc:end -->
+hermes skills install github:sxxcwj/b2b-sdr-hermes-skill
